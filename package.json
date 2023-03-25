@@ -1,0 +1,24 @@
+{
+  "name": "authmanagement",
+  "version": "1.0.0",
+  "description": "this will create a api of user register login",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/VaibhavTiwari00/auth_api.git"
+  },
+  "author": "Vaibhav Tiwari",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/VaibhavTiwari00/auth_api/issues"
+  },
+  "homepage": "https://github.com/VaibhavTiwari00/auth_api#readme",
+  "dependencies": {
+    "express": "^4.18.2",
+    "nodemon": "^2.0.21"
+  }
+}
