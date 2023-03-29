@@ -1,5 +1,5 @@
 const register = (req, res) => {
-  res.send("Controllers Connected Successfull");
+  res.json({ res: "Controllers Connected Successfull" });
 };
 
 module.exports = {

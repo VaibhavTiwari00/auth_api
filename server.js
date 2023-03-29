@@ -1,26 +1,61 @@
-// const express = require("express");
-// const app = express();
-// const auth_register = require("./controllers/register.controllers");
+const express = require("express");
+const app = express();
+const bodyParser = require("body-parser");
 
-// function index(req, res) {
-//   console.log(auth_register);
-//   res.send(auth_register);
-// }
+const auth_register = require("./controllers/register.controllers");
+const productRoutes = require("./api/products/product");
+const orderRoutes = require("./api/products/order");
 
-// app.get("/", index);
+const mongoose = require("mongoose");
 
-// app.get("/register", auth_register.register);
+mongoose
+  .connect("mongodb://localhost:27017")
+    .catch((err) => console.error(err));
+app.use(
+  bodyParser.urlencoded({
+    extended: false,
+  })
+);
+app.use(bodyParser.json());
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin,X-Requested-With,Content-Type,Accept,Authorization"
+  );
+  if (req.method === "OPTIONS") {
+    req.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,PATCH");
+    return res.status(200).json({});
+  }
+  next();
+});
 
-// app.listen(5000, () => {
-//   console.log("app will listen on port 5000");
-// });
+app.use("/products", productRoutes);
+app.use("/order", orderRoutes);
 
-var http = require("http");
+app.get("/", index);
+app.get("/register", auth_register.register);
 
-function onRequest(request, response) {
-  response.writeHead(200, { "Content-Type": "text/plain" });
-  response.write("Hello, world!");
-  response.end();
+app.use((req, res, next) => {
+  const error = new Error("404 not found");
+  error.status = 404;
+  next(error);
+});
+
+app.use((error, req, res, next) => {
+  res.status(error.status || 500);
+  res.json({
+    error: {
+      message: error.message,
+      status: error.status,
+    },
+  });
+});
+
+app.listen(5000, () => {
+  console.log("app will listen on port 5000");
+});
+
+function index(req, res) {
+  res.send({ msg: "first response GET" });
 }
-
-http.createServer(onRequest).listen(3000, () => {});
