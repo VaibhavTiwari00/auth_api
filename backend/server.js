@@ -1,39 +1,40 @@
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
-
+const dotenv = require('dotenv')
 const auth_register = require("./controllers/register.controllers");
 const productRoutes = require("./api/products/product");
+const userRoutes = require('./routes/userRoutes')
 const orderRoutes = require("./api/products/order");
+const connectDB = require("./config/db");
 
-const mongoose = require("mongoose");
+dotenv.config();
+connectDB();
 
-mongoose
-  .connect("mongodb://localhost:27017")
-    .catch((err) => console.error(err));
 app.use(
   bodyParser.urlencoded({
     extended: false,
   })
 );
 app.use(bodyParser.json());
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin,X-Requested-With,Content-Type,Accept,Authorization"
-  );
-  if (req.method === "OPTIONS") {
-    req.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,PATCH");
-    return res.status(200).json({});
-  }
-  next();
-});
+// app.use((req, res, next) => {
+//   res.header("Access-Control-Allow-Origin", "*");
+//   res.header(
+//     "Access-Control-Allow-Headers",
+//     "Origin,X-Requested-With,Content-Type,Accept,Authorization"
+//   );
+//   if (req.method === "OPTIONS") {
+//     req.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,PATCH");
+//     return res.status(200).json({});
+//   }
+//   next();
+// });
 
 app.use("/products", productRoutes);
 app.use("/order", orderRoutes);
+app.use('/notes',userRoutes)
 
-app.get("/", index);
+app.use("/", index);
 app.get("/register", auth_register.register);
 
 app.use((req, res, next) => {

@@ -1,6 +1,6 @@
 const express = require("express");
 
-const router = express.Router();
+const  router = express.Router();
 
 const mongoose = require("mongoose");
 const Product = require("../models/product");
@@ -11,7 +11,7 @@ router.get("/", (req, res, next) => {
     .then((docs) => {
       if (docs.length > 0) {
         console.log(docs);
-        res.status(200).json(docs);
+        res.json(docs); 
       } else {
         res.status(404).json({ error: "no Entries Found" });
       }
@@ -20,6 +20,7 @@ router.get("/", (req, res, next) => {
       res.status(500).json({ error: err });
     });
 });
+
 router.post("/", (req, res, next) => {
   const product = new Product({
     _id: new mongoose.Types.ObjectId(),
