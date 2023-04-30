@@ -2,10 +2,14 @@
 import { Form, Button, Row, Col } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import MainScreen from "../../components/MainScreen";
-
+import { Formik } from 'formik';
 
 
 function Login({ history }) {
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  }
 
 
   const loginContainer = {
@@ -19,7 +23,8 @@ function Login({ history }) {
       <div className={loginContainer}>
         {/* {error && <ErrorMessage variant="danger">{error}</ErrorMessage>} */}
         {/* {loading && <Loading />} */}
-        <Form >
+        <Formik>
+           <Form onSubmit={handleSubmit}>
           <Form.Group controlId="formBasicEmail">
             <Form.Label>Email address</Form.Label>
             <Form.Control
@@ -44,6 +49,8 @@ function Login({ history }) {
             Submit
           </Button>
         </Form>
+         
+        </Formik>
         <Row className="py-3">
           <Col>
             New Customer ? <Link to="/register">Register Here</Link>
